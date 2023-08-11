@@ -79,8 +79,18 @@ class TipoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tipo $tipo)
+    public function destroy($id)
     {
-        //
+          // Encontre um tipo pelo ID
+          $tipo = Tipo::find($id);
+
+          if (!$tipo) {
+              return response()->json(['message' => 'Tipo não encontrado!'], 404);
+          }  
+    
+          // Delete the brand
+          $tipo->delete();
+  
+          return response()->json(['message' => 'Tipo deletado com sucesso!'], 200);
     }
 }
