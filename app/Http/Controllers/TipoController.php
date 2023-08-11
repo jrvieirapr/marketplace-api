@@ -18,7 +18,6 @@ class TipoController extends Controller
 
         //Retornar lista em formato json
         return response()->json(['data' => $tipos]);
-
     }
 
     /**
@@ -45,25 +44,36 @@ class TipoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tipo $tipo)
+    public function show($id)
     {
-        //
+        // procure tipo por id
+        $tipo = Tipo::find($id);
+
+        if (!$tipo) {
+            return response()->json(['message' => 'Tipo não encontrado'], 404);
+        }
+
+        return response()->json($tipo);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tipo $tipo)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTipoRequest $request, Tipo $tipo)
+    public function update(UpdateTipoRequest $request, $id)
     {
-        //
+        // Procure o tipo pela id
+        $tipo = Tipo::find($id);
+
+        if (!$tipo) {
+            return response()->json(['message' => 'Tipo não encontrado'], 404);
+        }
+
+        // Faça o update do tipo
+        $tipo->update($request->all());
+
+        // Retorne o tipo
+        return response()->json($tipo);
     }
 
     /**

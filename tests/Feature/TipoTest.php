@@ -68,13 +68,12 @@ class TipoTest extends TestCase
     public function testCriacaoTipoFalha()
     {
         $data = [
-            "descricao" => $this->faker->word
+            "descricao" => 'a'
         ];
-
          // Fazer uma requisição POST
         $response = $this->postJson('/api/tipos', $data);
 
-           // Verifique se teve um retorno 422 - Falha no salvamento
+        // Verifique se teve um retorno 422 - Falha no salvamento
         // e se a estrutura do JSON Corresponde
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['descricao']);
@@ -85,19 +84,20 @@ class TipoTest extends TestCase
      *
      * @return void
      */
-    public function testePesquisaTipoSucesso()
+    public function testPesquisaTipoSucesso()
     {
         // Criar um tipo
         $tipo = Tipo::factory()->create();
 
+        
         // Fazer pesquisa
-        $response = $this->getJson('/api/tipos/' . $tipo->id);
-
+        $response = $this->getJson('/api/tipos/' . $tipo->id);   
+        
         // Verificar saida
         $response->assertStatus(200)
             ->assertJson([
                 'id' => $tipo->id,
-                'descricao' => $tipo->tipo,                
+                'descricao' => $tipo->descricao,                
             ]);
     }
 
@@ -107,7 +107,7 @@ class TipoTest extends TestCase
      *
      * @return void
      */
-    public function testePesquisaTipoSucessoComFalha()
+    public function testPesquisaTipoComFalha()
     {
         // Fazer pesquisa com um id inexistente
         $response = $this->getJson('/api/tipos/999'); // o 999 nao pode existir
@@ -115,7 +115,7 @@ class TipoTest extends TestCase
         // Veriicar a resposta
         $response->assertStatus(404)
             ->assertJson([
-                'message' => 'Brand not found'
+                'message' => 'Tipo não encontrado'
             ]);
     }
 
@@ -124,17 +124,16 @@ class TipoTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateTipoSuccess()
+    public function testUpdateTipoSucesso()
     {
         // Crie um tipo fake
         $tipo = Tipo::factory()->create();
 
         // Dados para update
         $newData = [
-            'descricao' => 'Tipo Descrição',
-            
+            'descricao' => 'Tipo Descrição',            
         ];
-
+        
         // Faça uma chamada PUT
         $response = $this->putJson('/api/tipos/' . $tipo->id, $newData);
 
