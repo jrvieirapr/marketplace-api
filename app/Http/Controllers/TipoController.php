@@ -27,6 +27,7 @@ class TipoController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -34,7 +35,11 @@ class TipoController extends Controller
      */
     public function store(StoreTipoRequest $request)
     {
-        //
+        // Crie um novo Tipo
+        $tipo = Tipo::create($request->all());
+
+        // // Returne o tipo e o code 201
+        return response()->json($tipo, 201);
     }
 
     /**
