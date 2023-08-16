@@ -20,14 +20,6 @@ class TipoController extends Controller
         return response()->json(['data' => $tipos]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,7 +29,7 @@ class TipoController extends Controller
         // Crie um novo Tipo
         $tipo = Tipo::create($request->all());
 
-        // // Returne o tipo e o code 201
+        // Returne o tipo e o code 201
         return response()->json($tipo, 201);
     }
 
