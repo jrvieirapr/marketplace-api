@@ -37,7 +37,8 @@ class TipoTest extends TestCase
     /**
      * Criar um Tipo
      */
-    public function testCriarTipoSucesso(){
+    public function testCriarTipoSucesso()
+    {
 
         //Criar o objeto
         $data = [
@@ -56,10 +57,9 @@ class TipoTest extends TestCase
         // e se a estrutura do JSON Corresponde
         $response->assertStatus(201)
             ->assertJsonStructure(['id', 'descricao', 'created_at', 'updated_at']);
-
     }
 
-    
+
     /**
      * Teste de criação com falhas
      *
@@ -70,7 +70,7 @@ class TipoTest extends TestCase
         $data = [
             "descricao" => 'a'
         ];
-         // Fazer uma requisição POST
+        // Fazer uma requisição POST
         $response = $this->postJson('/api/tipos', $data);
 
         // Verifique se teve um retorno 422 - Falha no salvamento
@@ -79,7 +79,7 @@ class TipoTest extends TestCase
             ->assertJsonValidationErrors(['descricao']);
     }
 
-     /**
+    /**
      * Teste de pesquisa de registro
      *
      * @return void
@@ -89,19 +89,19 @@ class TipoTest extends TestCase
         // Criar um tipo
         $tipo = Tipo::factory()->create();
 
-        
+
         // Fazer pesquisa
-        $response = $this->getJson('/api/tipos/' . $tipo->id);   
-        
+        $response = $this->getJson('/api/tipos/' . $tipo->id);
+
         // Verificar saida
         $response->assertStatus(200)
             ->assertJson([
                 'id' => $tipo->id,
-                'descricao' => $tipo->descricao,                
+                'descricao' => $tipo->descricao,
             ]);
     }
 
-    
+
     /**
      * Teste de pesquisa de registro com falha
      *
@@ -131,9 +131,9 @@ class TipoTest extends TestCase
 
         // Dados para update
         $newData = [
-            'descricao' => 'Tipo Descrição',            
+            'descricao' => 'Tipo Descrição',
         ];
-        
+
         // Faça uma chamada PUT
         $response = $this->putJson('/api/tipos/' . $tipo->id, $newData);
 
@@ -141,7 +141,7 @@ class TipoTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'id' => $tipo->id,
-                'descricao' => 'Tipo Descrição', 
+                'descricao' => 'Tipo Descrição',
             ]);
     }
 
@@ -169,7 +169,7 @@ class TipoTest extends TestCase
     }
 
     /**
-     * Teste update de marca
+     * Teste update de tipo
      *
      * @return void
      */
@@ -197,15 +197,18 @@ class TipoTest extends TestCase
 
         // Data para update
         $sameData = [
-            'descricao' => $tipo->tipo,            
+            'descricao' => $tipo->descricao,
         ];
 
         // Faça uma chamada PUT
         $response = $this->putJson('/api/tipos/' . $tipo->id, $sameData);
 
         // Verifique a resposta
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['descricao']);
+        $response->assertStatus(200)
+            ->assertJson([
+                'id' => $tipo->id,
+            'descricao' => $tipo->descricao
+            ]);
     }
 
     /**
@@ -221,7 +224,7 @@ class TipoTest extends TestCase
 
         // Para para upgrade
         $newData = [
-            'descricao' => $tipoExistente->tipo,            
+            'descricao' => $tipoExistente->tipo,
         ];
 
         // Faça o put 
@@ -272,8 +275,4 @@ class TipoTest extends TestCase
                 'message' => 'Tipo não encontrado!'
             ]);
     }
-
-
-
-
 }

@@ -29,7 +29,7 @@ class TipoController extends Controller
         // Crie um novo Tipo
         $tipo = Tipo::create($request->all());
 
-        // Returne o tipo e o code 201
+        // Retorne o codigo 201
         return response()->json($tipo, 201);
     }
 
@@ -79,6 +79,8 @@ class TipoController extends Controller
           if (!$tipo) {
               return response()->json(['message' => 'Tipo não encontrado!'], 404);
           }  
+
+          //Se tiver dependentes deve retornar erro
     
           // Delete the brand
           $tipo->delete();

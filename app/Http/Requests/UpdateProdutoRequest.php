@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTipoRequest extends FormRequest
+class UpdateProdutoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,12 @@ class UpdateTipoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'descricao' => 'min:2|unique:produtos,nome,' . $this->route('tipo') . ',id|required',
+
+            "nome" =>  'min:2|unique:produtos,nome,' . $this->route('produto') . ',id|required',
+            "descricao" => 'min:2|required',
+            "preco" => 'numeric|required',
+            "estoque" => 'numeric|required',
+            "tipo_id" => 'required|exists:tipos,id',
         ];
     }
 }
