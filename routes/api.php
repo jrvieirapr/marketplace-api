@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvaliacaoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TipoController;
 use Illuminate\Http\Request;
@@ -37,4 +38,13 @@ Route::middleware('api')->prefix('produtos')->group(function () {
     Route::get('/{produto}', [ProdutoController::class, 'show']);
     Route::put('/{produto}', [ProdutoController::class, 'update']);
     Route::delete('/{produto}', [ProdutoController::class, 'destroy']);
+});
+
+//Rotas Avaliacao
+Route::middleware('api')->prefix('avaliacaos')->group(function () {
+    Route::get('/', [AvaliacaoController::class, 'index']);
+    Route::post('/', [AvaliacaoController::class, 'store']);
+    Route::get('/{avalicao}', [AvaliacaoController::class, 'show']);
+    Route::put('/{avalicao}', [AvaliacaoController::class, 'update']);
+    Route::delete('/{avalicao}', [AvaliacaoController::class, 'destroy']);
 });

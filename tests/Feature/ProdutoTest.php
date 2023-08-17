@@ -204,7 +204,7 @@ class ProdutoTest extends TestCase
 
 
         // Dados para update
-        $newData = [
+        $newData = [ 
             'nome' => 'Novo nome',
             'descricao' => 'Novo nome',
             'preco' => 3.55,
