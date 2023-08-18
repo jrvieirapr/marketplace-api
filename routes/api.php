@@ -44,7 +44,5 @@ Route::middleware('api')->prefix('produtos')->group(function () {
 Route::middleware('api')->prefix('avaliacaos')->group(function () {
     Route::get('/', [AvaliacaoController::class, 'index']);
     Route::post('/', [AvaliacaoController::class, 'store']);
-    Route::get('/{avalicao}', [AvaliacaoController::class, 'show']);
-    Route::put('/{avalicao}', [AvaliacaoController::class, 'update']);
     Route::delete('/{avalicao}', [AvaliacaoController::class, 'destroy']);
 });
