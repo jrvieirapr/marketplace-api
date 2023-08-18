@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TipoController;
+use App\Models\Marketplace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +47,13 @@ Route::middleware('api')->prefix('avaliacaos')->group(function () {
     Route::get('/', [AvaliacaoController::class, 'index']);
     Route::post('/', [AvaliacaoController::class, 'store']);
     Route::delete('/{avalicao}', [AvaliacaoController::class, 'destroy']);
+});
+
+//Rotas Marketplaces
+Route::middleware('api')->prefix('marketplaces')->group(function () {
+    Route::get('/', [MarketplaceController::class, 'index']);
+    Route::post('/', [MarketplaceController::class, 'store']);
+    Route::get('/{marketplace}', [MarketplaceController::class, 'show']);
+    Route::put('/{marketplace}', [MarketplaceController::class, 'update']);
+    Route::delete('/{marketplace}', [MarketplaceController::class, 'destroy']);
 });

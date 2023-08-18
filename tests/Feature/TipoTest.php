@@ -10,6 +10,7 @@ use Tests\TestCase;
 class TipoTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+    
 
     /**Listar todos os tipos
      * @return void
