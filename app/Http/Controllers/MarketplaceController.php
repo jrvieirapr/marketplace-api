@@ -43,7 +43,7 @@ class MarketplaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Marketplace $marketplace)
+    public function edit($id)
     {
         //
     }

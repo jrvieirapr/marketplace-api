@@ -11,7 +11,7 @@ class UpdateMarketplaceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateMarketplaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nome' => 'min:2|unique:marketplaces,nome,' . $this->route('marketplace') . ',id|required',
+            'descricao' => 'min:2|required',
+            'url' => 'min:2|unique:marketplaces,url,' . $this->route('marketplace') . ',id|required',
         ];
     }
 }
