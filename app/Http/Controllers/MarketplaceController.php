@@ -13,15 +13,11 @@ class MarketplaceController extends Controller
      */
     public function index()
     {
-        //
-    }
+          //Pegar a lista do banco
+          $marketplace = Marketplace::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+          //Retornar lista em formato json
+          return response()->json(['data' => $marketplace]);
     }
 
     /**
@@ -29,7 +25,11 @@ class MarketplaceController extends Controller
      */
     public function store(StoreMarketplaceRequest $request)
     {
-        //
+         // Crie um novo Marketplace
+         $marketplace = Marketplace::create($request->all());
+
+         // Retorne o codigo 201
+         return response()->json($marketplace, 201);
     }
 
     /**
@@ -37,30 +37,53 @@ class MarketplaceController extends Controller
      */
     public function show($id)
     {
-        //
+       // procure tipo por id
+       $marketplace = Marketplace::find($id);
+
+       if (!$marketplace) {
+           return response()->json(['message' => 'Marketplace não encontrado'], 404);
+       }
+
+       return response()->json($marketplace);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMarketplaceRequest $request, Marketplace $marketplace)
+    public function update(UpdateMarketplaceRequest $request, $id)
     {
-        //
+        // Procure o tipo pela id
+        $marketplace = Marketplace::find($id);
+
+        if (!$marketplace) {
+            return response()->json(['message' => 'Marketplace não encontrado'], 404);
+        }
+
+        // Faça o update do tipo
+        $marketplace->update($request->all());
+
+        // Retorne o tipo
+        return response()->json($marketplace);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Marketplace $marketplace)
+    public function destroy($id)
     {
-        //
+         // Encontre um tipo pelo ID
+         $marketplace = Marketplace::find($id);
+
+         if (!$marketplace) {
+             return response()->json(['message' => 'Marketplace não encontrado!'], 404);
+         }  
+
+         //Se tiver dependentes deve retornar erro
+   
+         // Delete the brand
+         $marketplace->delete();
+ 
+         return response()->json(['message' => 'Marketplace deletado com sucesso!'], 200);
     }
 }
