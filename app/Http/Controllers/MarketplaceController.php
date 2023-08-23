@@ -35,7 +35,7 @@ class MarketplaceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Marketplace $marketplace)
+    public function show($id)
     {
         //
     }
