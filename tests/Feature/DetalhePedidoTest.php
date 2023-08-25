@@ -69,7 +69,7 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testCriacaoProdutoFalha()
+    public function testCriacaoDetalhesPedidosFalha()
     {
         $data = [
             'pedido_id' => "",
@@ -84,7 +84,7 @@ class DetalhePedidoTest extends TestCase
         // Verifique se teve um retorno 422 - Falha no salvamento
         // e se a estrutura do JSON Corresponde
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['id', 'pedido_id','produto_id','quantidade','preco','total', 'created_at', 'updated_at']);
+            ->assertJsonValidationErrors(['pedido_id','produto_id','quantidade','preco','total']);
     }
 
     /**
@@ -117,7 +117,7 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testPesquisaProdutoComFalha()
+    public function testPesquisaDetalhePedidoComFalha()
     {
         // Fazer pesquisa com um id inexistente
         $response = $this->getJson('/api/detalhespedidos/999'); // o 999 nao pode existir
@@ -125,7 +125,7 @@ class DetalhePedidoTest extends TestCase
         // Veriicar a resposta
         $response->assertStatus(404)
             ->assertJson([
-                'message' => 'Produto não encontrado'
+                'message' => 'Detalhe Pedido não encontrado'
             ]);
     }
 
@@ -134,18 +134,18 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateDetalhesPedidosucesso()
+    public function testUpdateDetalhesPedidosSucesso()
     {
         // Crie um produto fake
         $detalhePedido = DetalhePedido::factory()->create();
 
         // Dados para update
         $newData = [
-            'nome' => 'Novo nome',
-            'descricao' => 'Novo nome',
-            'preco' => 3.55,
-            'estoque' => 5,
-            'tipo_id' => $detalhePedido->tipo->id
+            'pedido_id' => $detalhePedido->pedido_id,
+            'produto_id' => $detalhePedido->produto_id,
+            'quantidade' => 3,
+            'preco' => 6,
+            'total' => 18,
 
         ];
 
@@ -155,12 +155,11 @@ class DetalhePedidoTest extends TestCase
         // Verifique a resposta
         $response->assertStatus(200)
             ->assertJson([
-                'id' => $detalhePedido->id,
-                'nome' => 'Novo nome',
-                'descricao' => 'Novo nome',
-                'preco' => 3.55,
-                'estoque' => 5,
-                'tipo_id' => $detalhePedido->tipo->id
+                'pedido_id' => $detalhePedido->pedido_id,
+                'produto_id' => $detalhePedido->produto_id,
+                'quantidade' => 3,
+                'preco' => 6,
+                'total' => 18,
             ]);
     }
 
@@ -169,18 +168,18 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateProdutoComFalhas()
+    public function testUpdateDetalheProdutoComFalhas()
     {
         // Crie um produto fake
         $detalhePedido = DetalhePedido::factory()->create();
 
         // Dados para update      
         $invalidData = [
-            'nome' => 'a',
-            'descricao' => 'a',
-            'preco' => 'a',
-            'estoque' => 'a',
-            'tipo_id' => 0
+            'pedido_id' => 9999,
+            'produto_id' => 9999,
+            'quantidade' => "",
+            'preco' => "",
+            'total' => "",
 
         ];
         // Faça uma chamada PUT
@@ -188,7 +187,7 @@ class DetalhePedidoTest extends TestCase
 
         // Verificar se teve um erro 422
         $response->assertStatus(422)
-            ->assertJsonValidationErrors(['nome', 'descricao', 'preco', 'estoque', 'tipo_id']);
+            ->assertJsonValidationErrors([ 'pedido_id','produto_id','quantidade','preco','total']);
     }
 
     /**
@@ -196,20 +195,20 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateProdutoNaoExistente()
+    public function testUpdateDetalhePedidoNaoExistente()
     {
 
         // Criar um tipo usando o factory
-        $pedido = Pedido::factory()->create();
+        $detalhePedido = DetalhePedido::factory()->create();
 
 
         // Dados para update
         $newData = [ 
-            'nome' => 'Novo nome',
-            'descricao' => 'Novo nome',
-            'preco' => 3.55,
-            'estoque' => 5,
-            'tipo_id' => $pedido->id
+            'pedido_id' => $detalhePedido->pedido_id,
+            'produto_id' => $detalhePedido->produto_id,
+            'quantidade' => $detalhePedido->quantidade,
+            'preco' => $detalhePedido->preco,
+            'total' => $detalhePedido->total,
 
         ];
         // Faça uma chamada PUT
@@ -218,7 +217,7 @@ class DetalhePedidoTest extends TestCase
         // Verificar o retorno 404
         $response->assertStatus(404)
             ->assertJson([
-                'message' => 'Produto não encontrado'
+                'message' => 'Detalhe Pedido não encontrado'
             ]);
     }
 
@@ -228,22 +227,18 @@ class DetalhePedidoTest extends TestCase
      *
      * @return void
      */
-    public function testUpdateProdutoMesmoNome()
+    public function testUpdateProdutoMesmaInformacao()
     {
         // Crie um tipo fake
         $detalhePedido = DetalhePedido::factory()->create();
 
         // Data para update
         $sameData = [
-            'nome' => $detalhePedido->nome,
-            'descricao' =>
-            $detalhePedido->descricao,
-            'preco' =>
-            $detalhePedido->preco,
-            'estoque' =>
-            $detalhePedido->estoque,
-            'tipo_id'
-            => $detalhePedido->tipo->id,
+            'pedido_id' => $detalhePedido->pedido_id,
+            'produto_id' => $detalhePedido->produto_id,
+            'quantidade' => $detalhePedido->quantidade,
+            'preco' => $detalhePedido->preco,
+            'total' => $detalhePedido->total,
         ];
 
         // Faça uma chamada PUT
@@ -252,53 +247,21 @@ class DetalhePedidoTest extends TestCase
         // Verifique a resposta
         $response->assertStatus(200)
             ->assertJson([
-                'id' => $detalhePedido->id,
-                'nome' => $detalhePedido->nome,
-                'descricao' =>
-                $detalhePedido->descricao,
-                'preco' =>
-                $detalhePedido->preco,
-                'estoque' =>
-                $detalhePedido->estoque,
-                'tipo_id'
-                => $detalhePedido->tipo->id,
+                'pedido_id' => $detalhePedido->pedido_id,
+                'produto_id' => $detalhePedido->produto_id,
+                'quantidade' => $detalhePedido->quantidade,
+                'preco' => $detalhePedido->preco,
+                'total' => $detalhePedido->total,
             ]);
     }
 
-    /**
-     * Teste de upgrade com o nome duplicado
-     *
-     * @return void
-     */
-    public function testUpdateProdutoNomeDuplicado()
-    {
-        // Crie um tipo fake
-        $detalhePedido = DetalhePedido::factory()->create();
-        $atualizar = DetalhePedido::factory()->create();
-
-        // Data para update
-        $sameData = [
-            'nome' => $detalhePedido->nome,
-            'descricao' => $detalhePedido->descricao,
-            'preco' => $detalhePedido->preco,
-            'estoque' =>   $detalhePedido->estoque,
-            'tipo_id' => $detalhePedido->tipo->id
-        ];
-
-        // Faça uma chamada PUT
-        $response = $this->putJson('/api/detalhespedidos/' . $atualizar->id, $sameData);
-
-        // Verifique a resposta
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['nome']);
-    }
-
+    
     /**
      * Teste de deletar com sucesso
      *
      * @return void
      */
-    public function testDeleteProduto()
+    public function testDeleteDetalhePedido()
     {
         // Criar produto fake
         $detalhePedido = DetalhePedido::factory()->create();
@@ -309,11 +272,11 @@ class DetalhePedidoTest extends TestCase
         // Verifica o Delete
         $response->assertStatus(200)
             ->assertJson([
-                'message' => 'Produto deletado com sucesso!'
+                'message' => 'Detalhe Pedido deletado com sucesso!'
             ]);
 
         //Verifique se foi deletado do banco
-        $this->assertDatabaseMissing('DetalhesPedidos', ['id' => $detalhePedido->id]);
+        $this->assertDatabaseMissing('detalhe_pedidos', ['id' => $detalhePedido->id]);
     }
 
     /**
@@ -329,7 +292,7 @@ class DetalhePedidoTest extends TestCase
         // Verifique a resposta
         $response->assertStatus(404)
             ->assertJson([
-                'message' => 'Produto não encontrado!'
+                'message' => 'Detalhe Pedido não encontrado!'
             ]);
     }
 }

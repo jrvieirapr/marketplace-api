@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\DetalheController;
 use App\Http\Controllers\DetalhePedidoController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TipoController;
 use App\Models\DetalhePedido;
-use App\Models\Marketplace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

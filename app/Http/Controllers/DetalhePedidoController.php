@@ -41,7 +41,7 @@ class DetalhePedidoController extends Controller
         $detalhe = DetalhePedido::find($id);
 
         if (!$detalhe) {
-            return response()->json(['message' => 'Detalhe Produto não encontrado'], 404);
+            return response()->json(['message' => 'Detalhe Pedido não encontrado'], 404);
         }
 
         return response()->json($detalhe);
@@ -74,6 +74,8 @@ class DetalhePedidoController extends Controller
         // Encontre um tipo pelo ID
         $detalhe = DetalhePedido::find($id);
 
+
+
         if (!$detalhe) {
             return response()->json(['message' => 'Detalhe Pedido não encontrado!'], 404);
         }  
@@ -81,6 +83,7 @@ class DetalhePedidoController extends Controller
         //Se tiver dependentes deve retornar erro
   
         // Delete the brand
+
         $detalhe->delete();
 
         return response()->json(['message' => 'Detalhe Pedido deletado com sucesso!'], 200);
