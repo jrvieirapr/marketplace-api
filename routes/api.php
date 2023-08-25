@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\DetalhePedidoController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TipoController;
+use App\Models\DetalhePedido;
 use App\Models\Marketplace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,4 +67,12 @@ Route::middleware('api')->prefix('pedidos')->group(function () {
     Route::get('/{pedido}', [PedidoController::class, 'show']);
     Route::put('/{pedido}', [PedidoController::class, 'update']);
     Route::delete('/{pedido}', [PedidoController::class, 'destroy']);
+});
+//Rotas Marketplaces
+Route::middleware('api')->prefix('detalhespedidos')->group(function () {
+    Route::get('/', [DetalhePedidoController::class, 'index']);
+    Route::post('/', [DetalhePedidoController::class, 'store']);
+    Route::get('/{detalhepedido}', [DetalhePedidoController::class, 'show']);
+    Route::put('/{detalhepedido}', [DetalhePedidoController::class, 'update']);
+    Route::delete('/{detalhepedido}', [DetalhePedidoController::class, 'destroy']);
 });
